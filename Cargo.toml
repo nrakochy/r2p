@@ -18,4 +18,4 @@ name = "r2p"
 rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 
 [dev-dependencies]
-reqwest = "0.12.4"
+reqwest = { version = "0.12.4", features = ["trust-dns"] }
