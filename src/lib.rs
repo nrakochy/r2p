@@ -2,9 +2,14 @@ use std::net::TcpListener;
 
 use actix_web::{dev::Server, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
 
-async fn greet(req: HttpRequest) -> impl Responder {
-    let name = req.match_info().get("name").unwrap_or("World");
-    return format!("Hello {}", &name);
+#[derive(serde::Deserialize)]
+struct FormData {
+    email: String,
+    name: String,
+}
+
+async fn subscribe(_form: web::Form<FormData>) -> impl Responder {
+    return HttpResponse::Ok().finish();
 }
 
 async fn health_check() -> impl Responder {
@@ -14,9 +19,8 @@ async fn health_check() -> impl Responder {
 pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
     let server = HttpServer::new(|| {
         App::new()
-            .route("/", web::get().to(greet))
             .route("/health_check", web::get().to(health_check))
-            .route("/{name}", web::get().to(greet))
+            .route("/subscriptions", web::post().to(subscribe))
     })
     .listen(listener)?
     .run();
