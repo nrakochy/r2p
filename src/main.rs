@@ -1,5 +1,5 @@
+use r2p::startup::run;
 use std::net::TcpListener;
-use r2p::run;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
