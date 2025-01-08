@@ -1,10 +1,11 @@
-use r2p::startup as r2p;
+use r2p::configuration;
+use r2p::startup::run;
 use std::net::TcpListener;
 
 fn spawn_app() -> String {
     let listener = TcpListener::bind("127.0.0.1:0").expect("[TCP] Failed to bind test");
     let port = listener.local_addr().unwrap().port();
-    let server = r2p::run(listener).expect("Failed to bind address");
+    let server = run(listener).expect("Failed to bind address");
     let _ = tokio::spawn(server);
     return format!("http://127.0.0.1:{}", port);
 }
@@ -25,6 +26,11 @@ async fn health_check_works() {
 #[tokio::test]
 async fn subscribe_returns_200_valid_form() {
     let app_address = spawn_app();
+    let config = configuration::get_configuration().expect("FAILED to read config");
+    /*
+     * I'm not sure we want the db depedency here
+     **/
+    let connection = config.database.connection_string();
     let client = reqwest::Client::new();
 
     let body = "name=le%persona&email=test%40gmail.com";

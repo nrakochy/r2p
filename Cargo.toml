@@ -4,11 +4,20 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-actix-web = "4.5.1"
-config = "0.14.0"
-serde = { version = "1.0.202", features = ["derive"] }
-sqlx = { version = "0.8.2", features = ["runtime-tokio-rustls", "macros", "postgres", "uuid", "chrono", "migrate"] }
-tokio = { version = "1.36.0", features = ["full"] }
+actix-web = "4.9.0"
+config = "0.15.4"
+serde = { version = "1.0.216", features = ["derive"] }
+sqlx = { version = "0.8.2", features = [
+	"runtime-tokio-rustls", 
+	"macros", 
+	"postgres", 
+	"uuid", 
+	"chrono", 
+	"migrate"
+  ]}
+
+tokio = { version = "1.42.0", features = ["full"] }
+tracing = { version = "0.1.41", features = ["log"] }
 
 [lib]
 path = "src/lib.rs"
@@ -21,4 +30,4 @@ name = "r2p"
 rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 
 [dev-dependencies]
-reqwest = { version = "0.12.4", features = ["trust-dns"] }
+reqwest = { version = "0.12.9", features = ["trust-dns"] }
